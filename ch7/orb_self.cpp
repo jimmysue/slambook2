@@ -2,8 +2,14 @@
 // Created by xiang on 18-11-25.
 //
 
-#include <opencv2/opencv.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/core/types.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/features2d.hpp>
+
+
 #include <string>
+#include <iostream>
 #include <nmmintrin.h>
 #include <chrono>
 
@@ -341,6 +347,7 @@ int ORB_pattern[256 * 4] = {
 
 // compute the descriptor
 void ComputeORB(const cv::Mat &img, vector<cv::KeyPoint> &keypoints, vector<DescType> &descriptors) {
+  using namespace std;
   const int half_patch_size = 8;
   const int half_boundary = 16;
   int bad_points = 0;
@@ -399,7 +406,7 @@ void BfMatch(const vector<DescType> &desc1, const vector<DescType> &desc2, vecto
 
   for (size_t i1 = 0; i1 < desc1.size(); ++i1) {
     if (desc1[i1].empty()) continue;
-    cv::DMatch m{i1, 0, 256};
+    cv::DMatch m(i1, 0, 256);
     for (size_t i2 = 0; i2 < desc2.size(); ++i2) {
       if (desc2[i2].empty()) continue;
       int distance = 0;

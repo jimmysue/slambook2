@@ -9,7 +9,6 @@ find_package(OpenCV 3 REQUIRED)
 find_package(G2O REQUIRED)
 find_package(Sophus REQUIRED)
 find_package(Eigen3 REQUIRED)
-
 include_directories(
         ${OpenCV_INCLUDE_DIRS}
         ${G2O_INCLUDE_DIRS}

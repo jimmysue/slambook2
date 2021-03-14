@@ -4,13 +4,12 @@ project(bundle_adjustment)
 set(CMAKE_CXX_STANDARD 17)
 LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
-Find_Package(G2O REQUIRED)
+Find_Package(g2o REQUIRED)
 Find_Package(Eigen3 REQUIRED)
 Find_Package(Ceres REQUIRED)
 Find_Package(Sophus REQUIRED)
-Find_Package(CSparse REQUIRED)
 
-SET(G2O_LIBS g2o_csparse_extension g2o_stuff g2o_core cxsparse)
+SET(G2O_LIBS  g2o::stuff g2o::core  g2o::csparse_extension)
 
 include_directories(${PROJECT_SOURCE_DIR} ${EIGEN3_INCLUDE_DIR}  ${G2O_INCLUDE_DIRS}
     ${CSPARSE_INCLUDE_DIR})

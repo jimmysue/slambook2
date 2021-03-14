@@ -184,7 +184,11 @@ void BALProblem::CameraToAngelAxisAndCenter(const double *camera,
     } else {
         angle_axis_ref = ConstVectorRef(camera, 3);
     }
-
+    // 世界坐标转换到相机坐标系公式为:
+    // P  =  R * X + t   
+    // 对于相机中心, 转换的相加坐标系之后为0, 即
+    // 0 = R * c + t   C为相机中心
+    // 上式推到可得
     // c = -R't
     Eigen::VectorXd inverse_rotation = -angle_axis_ref;
     AngleAxisRotatePoint(inverse_rotation.data(),
@@ -220,14 +224,16 @@ void BALProblem::Normalize() {
         median(i) = Median(&tmp);
     }
 
+    // median 为点集 "中点"
+
     for (int i = 0; i < num_points_; ++i) {
         VectorRef point(points + 3 * i, 3);
-        tmp[i] = (point - median).lpNorm<1>();
+        tmp[i] = (point - median).lpNorm<1>();  // 曼哈顿距离
     }
 
-    const double median_absolute_deviation = Median(&tmp);
+    const double median_absolute_deviation = Median(&tmp);  // 离中心点距离的中位数
 
-    // Scale so that the median absolute deviation of the resulting
+    // Scale so that the median absolute deviation(偏差) of the resulting
     // reconstruction is 100
 
     const double scale = 100.0 / median_absolute_deviation;
@@ -238,9 +244,12 @@ void BALProblem::Normalize() {
         point = scale * (point - median);
     }
 
+    // 三维点进行了统一的平移和缩放
+    // uv = RP + t
     double *cameras = mutable_cameras();
     double angle_axis[3];
     double center[3];
+    // 相机参数 有 R;t 组成, 其中 R 用罗德里格斯向量表示
     for (int i = 0; i < num_cameras_; ++i) {
         double *camera = cameras + camera_block_size() * i;
         CameraToAngelAxisAndCenter(camera, angle_axis, center);

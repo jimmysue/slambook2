@@ -8,8 +8,7 @@ find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 # eigen 
-include_directories("/usr/include/eigen3/")
-
+find_package(Eigen3 REQUIRED)
 # pcl 
 find_package(PCL REQUIRED)
 include_directories(${PCL_INCLUDE_DIRS})
@@ -20,10 +19,10 @@ find_package(octomap REQUIRED)
 include_directories(${OCTOMAP_INCLUDE_DIRS})
 
 add_executable(pointcloud_mapping pointcloud_mapping.cpp)
-target_link_libraries(pointcloud_mapping ${OpenCV_LIBS} ${PCL_LIBRARIES})
+target_link_libraries(pointcloud_mapping ${OpenCV_LIBS} ${PCL_LIBRARIES} Eigen3::Eigen)
 
 add_executable(octomap_mapping octomap_mapping.cpp)
-target_link_libraries(octomap_mapping ${OpenCV_LIBS} ${PCL_LIBRARIES} ${OCTOMAP_LIBRARIES})
+target_link_libraries(octomap_mapping ${OpenCV_LIBS} ${PCL_LIBRARIES} ${OCTOMAP_LIBRARIES} Eigen3::Eigen)
 
 add_executable(surfel_mapping surfel_mapping.cpp)
-target_link_libraries(surfel_mapping ${OpenCV_LIBS} ${PCL_LIBRARIES})
+target_link_libraries(surfel_mapping ${OpenCV_LIBS} ${PCL_LIBRARIES} Eigen3::Eigen)
